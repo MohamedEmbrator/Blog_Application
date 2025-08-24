@@ -78,3 +78,14 @@ module.exports.profilePhotoUploadController = asyncHandler(async (req, res) => {
   // 8- Remove Image From The Server
   fs.unlinkSync(imagePath);
 });
+
+module.exports.deleteUserProfileController = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: "User Not Found" });
+  }
+  await cloudinaryRemoveImage(user.profilePhoto.publicId);
+  await User.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ message: "Your Profile Has Been Deleted Succefully" });
+});
