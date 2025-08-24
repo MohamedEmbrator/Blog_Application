@@ -1,14 +1,16 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const { User, validateUpdateUser } = require("../models/User");
+const { Comment } = require("../models/Comment");
+const { Post } = require("../models/Post");
 const path = require('path');
 const fs = require('fs');
-const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
+const { cloudinaryUploadImage, cloudinaryRemoveImage, cloudinaryRemoveMultipleImages } = require("../utils/cloudinary");
+
 module.exports.getAllUsersController = asyncHandler(async (req, res) => {
   const users = await User.find().select("-password").populate("posts");
   res.status(200).json(users);
 });
-
 
 module.exports.getUserProfileController = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password").populate("posts");
@@ -17,7 +19,6 @@ module.exports.getUserProfileController = asyncHandler(async (req, res) => {
   }
   res.status(200).json(user);
 });
-
 
 module.exports.updateUserProfileController = asyncHandler(async (req, res) => {
   const { error } = validateUpdateUser(req.body);
@@ -84,7 +85,19 @@ module.exports.deleteUserProfileController = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User Not Found" });
   }
+
+  const posts = await Post.find({ user: user._id });
+  const publicIds = posts?.map((post) => post.image.publicId);
+
+  if (publicIds?.length > 0) {
+    await cloudinaryRemoveMultipleImages(publicIds);
+  }
+
   await cloudinaryRemoveImage(user.profilePhoto.publicId);
+
+  await Post.deleteMany({ user: user._id });
+  await Comment.deleteMany({ user: user._id });
+
   await User.findByIdAndDelete(req.params.id);
 
   res.status(200).json({ message: "Your Profile Has Been Deleted Succefully" });

@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const fs = require("fs");
 const path = require("path");
 const { Post, validateCreatePost, validateUpdatePost } = require("../models/Post");
+const { Comment } = require("../models/Comment");
 const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
 
 module.exports.createPostContoller = asyncHandler(async (req, res) => {
@@ -61,6 +62,7 @@ module.exports.deletePostController = asyncHandler(async (req, res) => {
   if (req.user.isAdmin || req.user.id === post.user.toString()) {
     await cloudinaryRemoveImage(post.image.puplicId);
     await Post.findByIdAndDelete(req.params.id);
+    await Comment.deleteMany({ postId: post._id });
     res.status(200).json({ message: "Post Deleted Successfully", postId: post._id });
   } else {
     res.status(403).json({message: "Access Denied"});
