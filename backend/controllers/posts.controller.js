@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const { Post, validateCreatePost, validateUpdatePost } = require("../models/Post");
 const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
-const { url } = require("inspector");
 
 module.exports.createPostContoller = asyncHandler(async (req, res) => {
   if (!req.file) {
@@ -42,7 +41,7 @@ module.exports.getAllPostsController = asyncHandler(async (req, res) => {
 });
 
 module.exports.getSinglePostController = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id).populate("user", ["-password"]);
+  const post = await Post.findById(req.params.id).populate("user", ["-password"]).populate("comments");
   if (!post) {
     return res.status(404).json({ message: "Post Not Found" });
   }
