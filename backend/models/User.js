@@ -9,7 +9,11 @@ const UserSchema = new mongoose.Schema({
   bio: String,
   isAdmin: { type: Boolean, default: false },
   isAccountVerified: { type: Boolean, default: false }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+
+
+UserSchema.virtual("posts", { ref: "Post", foreignField: "user", localField: "_id" });
+
 
 // Generate Auth Token
 UserSchema.methods.generateAuthToken = function () {

@@ -6,12 +6,7 @@ const PostSchema = new mongoose.Schema({
   description: { type: String, required: true, trim: true, minLength: 10 },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, },
   category: { type: String, required: true },
-  image: {
-    type: Object, default: {
-      url: "",
-      publicId: null
-    }
-  },
+  image: { type: Object, default: { url: "", publicId: null } },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
 }, { timestamps: true });
 

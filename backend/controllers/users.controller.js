@@ -5,13 +5,13 @@ const path = require('path');
 const fs = require('fs');
 const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
 module.exports.getAllUsersController = asyncHandler(async (req, res) => {
-  const users = await User.find().select("-password");
+  const users = await User.find().select("-password").populate("posts");
   res.status(200).json(users);
 });
 
 
 module.exports.getUserProfileController = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.params.id).select("-password").populate("posts");
   if (!user) {
     return res.status(400).json({ message: "User Not Found" });
   }
