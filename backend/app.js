@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const connectToDB = require("./config/connectToDB");
+const { errorHandler, notFound } = require("./middlewares/error");
 connectToDB();
 app.use(express.json());
 
@@ -15,6 +16,9 @@ app.use("/api/users", require("./routes/users.route"));
 app.use("/api/posts", require("./routes/posts.route"));
 app.use("/api/comments", require("./routes/comments.route"));
 app.use("/api/categories", require("./routes/categories.route"));
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
