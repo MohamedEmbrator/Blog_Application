@@ -1,10 +1,15 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const HeaderRight = () => {
+  const user = null;
+
   const [dropdown, setDropdown] = useState(false);
-  const user = {_id: "464aw4da564f6", username: "Test", profilePhoto: {url: "https://res.cloudinary.com/dahu30lz2/image/upload/v1756027940/q4qm13xqzu6feuqfv1sg.png"}};
-  function logoutHandler() {}
+
+  const logoutHandler = () => {
+    setDropdown(false);
+  }
+
   return (
     <div className="header-right">
       {user ? (

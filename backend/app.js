@@ -1,16 +1,21 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("dotenv").config();
 const connectToDB = require("./config/connectToDB");
 const { errorHandler, notFound } = require("./middlewares/error");
 connectToDB();
 app.use(express.json());
 
-
 const port = 3000;
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use(cors({
+  origin: "http://localhost:5173/"
+}))
+
 app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/users", require("./routes/users.route"));
 app.use("/api/posts", require("./routes/posts.route"));

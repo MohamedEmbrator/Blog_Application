@@ -32,5 +32,5 @@ module.exports.loginUserController = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Invalid Email or Password" });
   }
   const token = user.generateAuthToken();
-  res.status(200).json({ _id: user._id, isAdmin: user.isAdmin, profilePhoto: user.profilePhoto, token });
+  res.status(200).json({ _id: user._id, isAdmin: user.isAdmin, profilePhoto: user.profilePhoto, token, username: user.username });
 });
