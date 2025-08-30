@@ -4,12 +4,20 @@ const cors = require("cors");
 require("dotenv").config();
 const connectToDB = require("./config/connectToDB");
 const xss = require("xss-clean");
+const rateLimiting = require("express-rate-limit");
 const { errorHandler, notFound } = require("./middlewares/error");
 connectToDB();
 app.use(express.json());
 
 // Prevent XSS ( Cross Site Scripting ) Attacks
 app.use(xss());
+
+// Rate Limiting
+app.use(rateLimiting({
+  windowMs: 10 * 60 * 1000, // 10 Minutes
+  max: 200,
+
+}))
 
 const port = 3000;
 app.get("/", (req, res) => {
