@@ -7,22 +7,23 @@ import { deleteCategory, fetchCategories } from "../../redux/apiCalls/categoryAp
 
 const CategoriesTable = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { categories } = useSelector(state => state.category);
-
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchCategories());
   }, []);
-
-  // Delete Category Handler
   const deleteCategoryHandler = (categoryId) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this category!",
       icon: "warning",
+      // @ts-ignore
       buttons: true,
       dangerMode: true,
     }).then((isOk) => {
       if (isOk) {
+        // @ts-ignore
         dispatch(deleteCategory(categoryId))
       }
     });

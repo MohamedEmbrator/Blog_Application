@@ -1,36 +1,47 @@
 import "./profile.css";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import UpdateProfileModal from "./UpdateProfileModal";
 import PostItem from "../../components/posts/PostItem";
 import { Oval } from "react-loader-spinner";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteProfile,
+  getUserProfile,
+  uploadProfilePhoto,
+} from "../../redux/apiCalls/profileApiCall";
+import { logoutUser } from "../../redux/apiCalls/authApiCall";
 
 const Profile = () => {
-  const user = null;
-  const profile = null;
-  const loading = false;
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const { user } = useSelector((state) => state.auth);
+  // @ts-ignore
+  const { profile, loading, isProfileDeleted } = useSelector((state) => state.profile);
   const [file, setFile] = useState(null);
   const [updateProfile, setUpdateProfile] = useState(false);
-
   const { id } = useParams();
-
   useEffect(() => {
+    // @ts-ignore
+    dispatch(getUserProfile(id));
     window.scrollTo(0, 0);
   }, [id]);
-
   const navigate = useNavigate();
-  // Form Submit Handler
+  useEffect(() => {
+    if (isProfileDeleted) {
+      navigate("/");
+    }
+  }, [navigate, isProfileDeleted]);
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (!file) return toast.warning("ther is no file!");
-
     const formData = new FormData();
     formData.append("image", file);
+    // @ts-ignore
+    dispatch(uploadProfilePhoto(formData));
   };
-
-  // Delete Account Handler
   const deleteAccountHandler = () => {
     swal({
       title: "Are you sure?",
@@ -41,28 +52,32 @@ const Profile = () => {
       dangerMode: true,
     }).then((isOk) => {
       if (isOk) {
-        console.log("Deleted");
+        // @ts-ignore
+        dispatch(deleteProfile(user._id));
+        // @ts-ignore
+        dispatch(logoutUser());
       }
     });
   };
 
-  if(loading) {
+  if (loading) {
     return (
-    <div className="profile-loader">
-      <Oval
-        height={120}
-        width={120}
-        color="#000"
-        wrapperStyle={{}}
-        wrapperClass=""
-        visible={true}
-        ariaLabel='oval-loading'
-        secondaryColor="grey"
-        strokeWidth={3}
-        strokeWidthSecondary={3}
+      <div className="profile-loader">
+        <Oval
+          height={120}
+          width={120}
+          color="#000"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="oval-loading"
+          secondaryColor="grey"
+          strokeWidth={3}
+          strokeWidthSecondary={3}
         />
-    </div>
-  )}
+      </div>
+    );
+  }
 
   return (
     <section className="profile">
@@ -127,10 +142,7 @@ const Profile = () => {
         </button>
       )}
       {updateProfile && (
-        <UpdateProfileModal
-          profile={profile}
-          setUpdateProfile={setUpdateProfile}
-        />
+        <UpdateProfileModal {...{ profile, setUpdateProfile }} />
       )}
     </section>
   );

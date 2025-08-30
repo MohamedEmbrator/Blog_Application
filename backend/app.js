@@ -12,15 +12,14 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use(cors({
-  origin: "http://localhost:5173/"
-}))
+app.use(cors({ origin: "*" }));
 
 app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/users", require("./routes/users.route"));
 app.use("/api/posts", require("./routes/posts.route"));
 app.use("/api/comments", require("./routes/comments.route"));
 app.use("/api/categories", require("./routes/categories.route"));
+app.use("/api/password", require("./routes/password.route"));
 
 app.use(notFound);
 app.use(errorHandler);

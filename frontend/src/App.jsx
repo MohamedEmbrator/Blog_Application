@@ -19,8 +19,10 @@ import CommentsTable from "./pages/admin/CommentsTable";
 import VerifyEmail from "./pages/verify-email/VerifyEmail";
 import CreatePost from "./pages/create-post/CreatePost";
 import ForgotPassword from "./pages/forms/ForgotPassword";
+import { useSelector } from "react-redux";
 function App() {
-  const user = { isAdmin: true };
+  // @ts-ignore
+  const { user } = useSelector((state) => state.auth);
   return (
     <BrowserRouter>
       <ToastContainer theme="colored" position="top-center" />

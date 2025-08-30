@@ -2,10 +2,18 @@ import PostList from "../../components/posts/PostList";
 import "./home.css";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { Link } from "react-router-dom";
-import { posts } from "../../dummyData";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchPosts } from "../../redux/apiCalls/postApiCall";
 
 const Home = () => {
-
+  // @ts-ignore
+  const { posts } = useSelector((state) => state.post);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(fetchPosts(1))
+  }, [])
   return (
     <section className="home">
       <div className="home-hero-header">

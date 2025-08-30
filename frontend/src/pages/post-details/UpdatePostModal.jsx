@@ -7,13 +7,12 @@ import { fetchCategories } from "../../redux/apiCalls/categoryApiCall";
 
 const UpdatePostModal = ({ setUpdatePost, post }) => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { categories } = useSelector((state) => state.category);
-
   const [title, setTitle] = useState(post.title);
   const [description, setDescription] = useState(post.description);
   const [category, setCategory] = useState(post.category);
 
-  // Form Submit Handler
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (title.trim() === "") return toast.error("Post Title is required");
@@ -21,11 +20,12 @@ const UpdatePostModal = ({ setUpdatePost, post }) => {
     if (description.trim() === "")
       return toast.error("Post Description is required");
 
+    // @ts-ignore
     dispatch(updatePost({ title, category, description }, post?._id));
     setUpdatePost(false);
   };
-
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchCategories());
   }, []);
 
@@ -61,6 +61,7 @@ const UpdatePostModal = ({ setUpdatePost, post }) => {
         </select>
         <textarea
           className="update-post-textarea"
+          // @ts-ignore
           rows="5"
           value={description}
           onChange={(e) => setDescription(e.target.value)}

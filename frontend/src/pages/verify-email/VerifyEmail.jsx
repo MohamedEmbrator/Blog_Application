@@ -1,11 +1,19 @@
 import "./verify-email.css";
 import { Link,useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { verifyEmail } from "../../redux/apiCalls/authApiCall";
 
 const VerifyEmail = () => {
-  const isEmailVerified = null;
   const { userId, token } = useParams();
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const { isEmailVerified } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(verifyEmail(userId, token))
+  }, [userId, token]);
 
   return (
     <section className="verfiy-email">

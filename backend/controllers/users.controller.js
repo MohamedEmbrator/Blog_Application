@@ -33,9 +33,9 @@ module.exports.updateUserProfileController = asyncHandler(async (req, res) => {
     $set: {
       username: req.body.username,
       password: req.body.password,
-      bio: req.body.password
+      bio: req.body.bio
     }
-  }, { new: true }).select("-password");
+  }, { new: true }).select("-password").populate("posts");
   res.status(200).json(updatedUser);
 });
 
@@ -92,13 +92,11 @@ module.exports.deleteUserProfileController = asyncHandler(async (req, res) => {
   if (publicIds?.length > 0) {
     await cloudinaryRemoveMultipleImages(publicIds);
   }
-
-  await cloudinaryRemoveImage(user.profilePhoto.publicId);
-
+  if (user.profilePhoto.publicId !== null) {
+    await cloudinaryRemoveImage(user.profilePhoto.publicId);
+  }
   await Post.deleteMany({ user: user._id });
   await Comment.deleteMany({ user: user._id });
-
   await User.findByIdAndDelete(req.params.id);
-
   res.status(200).json({ message: "Your Profile Has Been Deleted Succefully" });
 });

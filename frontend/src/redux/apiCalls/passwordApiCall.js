@@ -2,7 +2,6 @@ import { passwordActions } from "../slices/passwordSlice";
 import request from "../../utils/request";
 import { toast } from "react-toastify";
 
-// Forgot Password
 export function forgotPassword(email) {
     return async () => {
       try {
@@ -14,7 +13,6 @@ export function forgotPassword(email) {
     }
 }
 
-// Get Reset Password
 export function getResetPassword(userId, token) {
     return async (dispatch) => {
       try {
@@ -25,8 +23,6 @@ export function getResetPassword(userId, token) {
       }
     }
 }
-
-// Reset The Password
 export function resetPassword(newPassword, user) {
     return async () => {
       try {

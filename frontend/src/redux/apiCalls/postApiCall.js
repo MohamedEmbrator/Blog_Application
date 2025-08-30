@@ -13,8 +13,6 @@ export function fetchPosts(pageNumber) {
     }
   };
 }
-
-// Get Posts Count
 export function getPostsCount() {
   return async (dispatch) => {
     try {
@@ -25,8 +23,6 @@ export function getPostsCount() {
     }
   };
 }
-
-// Fetch Posts Based On Category
 export function fetchPostsBasedOnCategory(category) {
   return async (dispatch) => {
     try {
@@ -38,7 +34,6 @@ export function fetchPostsBasedOnCategory(category) {
   };
 }
 
-// Create Post
 export function createPost(newPost) {
   return async (dispatch, getState) => {
     try {
@@ -49,17 +44,14 @@ export function createPost(newPost) {
           "Content-Type": "multipart/form-data",
         },
       });
-
       dispatch(postActions.setIsPostCreated());
-      setTimeout(() => dispatch(postActions.clearIsPostCreated()), 2000); // 2s
+      setTimeout(() => dispatch(postActions.clearIsPostCreated()), 2000);
     } catch (error) {
       toast.error(error.response.data.message);
-      dispatch(postActions.clearLoading());
     }
   };
 }
 
-// Fetch Single Post
 export function fetchSinglePost(postId) {
   return async (dispatch) => {
     try {
@@ -70,10 +62,8 @@ export function fetchSinglePost(postId) {
     }
   };
 }
-
-// Toggle Like Post
 export function toggleLikePost(postId) {
-  return async (dispatch,getState) => {
+  return async (dispatch, getState) => {
     try {
       const { data } = await request.put(`/api/posts/like/${postId}`, {}, {
         headers: {
@@ -84,62 +74,54 @@ export function toggleLikePost(postId) {
     } catch (error) {
       toast.error(error.response.data.message);
     }
-  };
+  }
 }
-
-// Update Post Image
-export function updatePostImage(newImage,postId) {
-  return async (dispatch,getState) => {
+export function updatePostImage(newImage, postId) {
+  return async (dispatch, getState) => {
     try {
       await request.put(`/api/posts/update-image/${postId}`, newImage, {
         headers: {
           Authorization: "Bearer " + getState().auth.user.token,
-          "Content-Type":"multipart/form-data",
+          "Content-Type": "multipart/form-data"
         }
       });
-      toast.success("New post image uploaded successfully");
+      toast.success("New Post Image Uploaded Successfully");
     } catch (error) {
       toast.error(error.response.data.message);
     }
-  };
+  }
 }
-
-// Update Post
-export function updatePost(newPost,postId) {
-  return async (dispatch,getState) => {
-    try {
-      const { data } = await request.put(`/api/posts/${postId}`, newPost, {
-        headers: {
-          Authorization: "Bearer " + getState().auth.user.token,
-        }
-      });
-      dispatch(postActions.setPost(data));
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
+export function updatePost(newPost, postId) {
+  return async (dispatch, getState) => {
+  try {
+    const { data } = await request.put(`/api/posts/${postId}`, newPost, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+      }
+    });
+    dispatch(postActions.setPost(data));
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
 }
-
-// Delete Post
+}
 export function deletePost(postId) {
-  return async (dispatch,getState) => {
-    try {
-      const { data } = await request.delete(`/api/posts/${postId}`, {
-        headers: {
-          Authorization: "Bearer " + getState().auth.user.token,
-        }
-      });
-      dispatch(postActions.deletePost(data.postId));
-      toast.success(data.message);
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
+  return async (dispatch, getState) => {
+  try {
+    const { data } = await request.delete(`/api/posts/${postId}`, {
+      headers: {
+        Authorization: "Bearer " + getState().auth.user.token,
+      }
+    });
+    dispatch(postActions.deletePost(data.postId));
+    toast.success(data.message);
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
 }
-
-// Get All Posts
+}
 export function getAllPosts() {
-  return async (dispatch) => {
+    return async (dispatch) => {
     try {
       const { data } = await request.get(`/api/posts`);
       dispatch(postActions.setPosts(data));

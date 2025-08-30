@@ -60,7 +60,7 @@ module.exports.deletePostController = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Post Not Found" });
   }
   if (req.user.isAdmin || req.user.id === post.user.toString()) {
-    await cloudinaryRemoveImage(post.image.puplicId);
+    await cloudinaryRemoveImage(post.image.publicId);
     await Post.findByIdAndDelete(req.params.id);
     await Comment.deleteMany({ postId: post._id });
     res.status(200).json({ message: "Post Deleted Successfully", postId: post._id });

@@ -7,12 +7,12 @@ import { deleteComment } from "../../redux/apiCalls/commentApiCall";
 
 const CommentList = ({ comments }) => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { user } = useSelector((state) => state.auth);
 
   const [updateComment, setUpdateComment] = useState(false);
   const [commentForUpdate, setCommentForUpdate] = useState(null);
 
-  // Update Comment Handler
   const updateCommentHandler = (comment) => {
     setCommentForUpdate(comment);
     setUpdateComment(true);
@@ -24,10 +24,12 @@ const CommentList = ({ comments }) => {
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this comment!",
       icon: "warning",
+      // @ts-ignore
       buttons: true,
       dangerMode: true,
     }).then((isOk) => {
       if (isOk) {
+        // @ts-ignore
         dispatch(deleteComment(commentId));
       }
     });
@@ -41,8 +43,8 @@ const CommentList = ({ comments }) => {
           <div className="comment-item-info">
             <div className="comment-item-username">{comment.username}</div>
             <div className="comment-item-time">
-                {new Date(comment.createdAt).toISOString()}
-              ago
+                {new Date(comment.createdAt).toDateString()}
+              
             </div>
           </div>
           <p className="comment-item-text">{comment.text}</p>

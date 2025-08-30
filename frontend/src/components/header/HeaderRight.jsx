@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../redux/apiCalls/authApiCall";
 
 const HeaderRight = () => {
-  const user = null;
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const { user } = useSelector((state) => state.auth);
 
   const [dropdown, setDropdown] = useState(false);
 
   const logoutHandler = () => {
+    // @ts-ignore
+    dispatch(logoutUser())
     setDropdown(false);
   }
 

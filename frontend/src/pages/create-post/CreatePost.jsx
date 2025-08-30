@@ -9,9 +9,10 @@ import { fetchCategories } from "../../redux/apiCalls/categoryApiCall";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { loading, isPostCreated } = useSelector((state) => state.post);
+  // @ts-ignore
   const { categories } = useSelector((state) => state.category);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -32,6 +33,7 @@ const CreatePost = () => {
     formData.append("description", description);
     formData.append("category", category);
 
+    // @ts-ignore
     dispatch(createPost(formData));
   };
 
@@ -43,6 +45,7 @@ const CreatePost = () => {
   }, [isPostCreated, navigate]);
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchCategories());
   }, []);
 
@@ -73,6 +76,7 @@ const CreatePost = () => {
         </select>
         <textarea
           className="create-post-textarea"
+          // @ts-ignore
           rows="5"
           placeholder="Post Description"
           value={description}

@@ -16,7 +16,7 @@ export const posts = [
     _id: 2,
     title: "JavaScript",
     description: "About JavaScript",
-    category: "programming",
+    category: "Programming",
     image: "/images/javascript.jpeg",
     likes: [1, 2, 3, 4],
     createdAt: "Sun Oct 06 2021",
@@ -90,7 +90,7 @@ export const categories = [
   },
   {
     _id: 3,
-    title: "programming",
+    title: "Programming",
   },
   {
     _id: 4,

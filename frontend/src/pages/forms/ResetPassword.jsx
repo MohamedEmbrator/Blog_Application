@@ -10,6 +10,7 @@ import {
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { isError } = useSelector((state) => state.password);
 
   const [password, setPassword] = useState("");
@@ -17,6 +18,7 @@ const ResetPassword = () => {
   const { userId, token } = useParams();
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(getResetPassword(userId, token));
   }, [userId, token]);
 
@@ -25,6 +27,7 @@ const ResetPassword = () => {
     e.preventDefault();
     if (password.trim() === "") return toast.error("Password is required");
 
+    // @ts-ignore
     dispatch(resetPassword(password, { userId, token }));
   };
 

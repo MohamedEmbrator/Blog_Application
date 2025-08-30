@@ -3,7 +3,6 @@ import { commentActions } from "../slices/commentSlice";
 import request from "../../utils/request";
 import { toast } from "react-toastify";
 
-// Create Comment
 export function createComment(newComment) {
   return async (dispatch, getState) => {
     try {
@@ -19,7 +18,6 @@ export function createComment(newComment) {
   };
 }
 
-// Update Comment
 export function updateComment(commentId, comment) {
   return async (dispatch, getState) => {
     try {
@@ -39,7 +37,6 @@ export function updateComment(commentId, comment) {
   };
 }
 
-// Delete Comment
 export function deleteComment(commentId) {
   return async (dispatch, getState) => {
     try {
@@ -56,7 +53,6 @@ export function deleteComment(commentId) {
   };
 }
 
-// Fetch All Comments
 export function fetchAllComments() {
   return async (dispatch, getState) => {
     try {

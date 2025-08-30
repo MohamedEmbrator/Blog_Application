@@ -21,7 +21,6 @@ module.exports.deleteCategoryController = asyncHandler(async (req, res) => {
   if (!category) {
     return res.status(404).json({message: "Category Not Found"});
   }
-
   await Category.findByIdAndDelete(req.params.id);
-  res.status(200).json({ message: "Category Deleted Successfully", categoryId: category._id });
+  res.status(200).json({ message: "Category Deleted Successfully", categoryId: req.params.id });
 })

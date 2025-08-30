@@ -2,7 +2,6 @@ import { categoryActions } from "../slices/categorySlice";
 import request from "../../utils/request";
 import { toast } from "react-toastify";
 
-// Fetch All Categories
 export function fetchCategories() {
   return async (dispatch) => {
     try {
@@ -14,9 +13,8 @@ export function fetchCategories() {
   };
 }
 
-// Create Category
 export function createCategory(newCategory) {
-  return async (dispatch,getState) => {
+  return async (dispatch, getState) => {
     try {
       const { data } = await request.post("/api/categories", newCategory, {
         headers: {
@@ -31,15 +29,15 @@ export function createCategory(newCategory) {
   };
 }
 
-// Delete Category
 export function deleteCategory(categoryId) {
-  return async (dispatch,getState) => {
+  return async (dispatch, getState) => {
     try {
       const { data } = await request.delete(`/api/categories/${categoryId}`, {
         headers: {
           Authorization: "Bearer " + getState().auth.user.token,
         }
       });
+      console.log(data);
       dispatch(categoryActions.deleteCategory(data.categoryId));
       toast.success(data.message);
     } catch (error) {

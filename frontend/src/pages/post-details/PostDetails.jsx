@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams,useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import "./post-details.css";
 import { toast } from "react-toastify";
 import AddComment from "../../components/comments/AddComment";
@@ -7,51 +7,46 @@ import CommentList from "../../components/comments/CommentList";
 import swal from "sweetalert";
 import UpdatePostModal from "./UpdatePostModal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deletePost,
-  fetchSinglePost,
-  toggleLikePost,
-  updatePostImage
-} from "../../redux/apiCalls/postApiCall";
+import { deletePost, fetchSinglePost, toggleLikePost, updatePostImage } from "../../redux/apiCalls/postApiCall";
 
 const PostDetails = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { post } = useSelector((state) => state.post);
+  // @ts-ignore
   const { user } = useSelector((state) => state.auth);
-
   const { id } = useParams();
-
   const [file, setFile] = useState(null);
   const [updatePost, setUpdatePost] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // @ts-ignore
     dispatch(fetchSinglePost(id));
   }, [id]);
-
-  // Update Image Submit Handler
   const updateImageSubmitHandler = (e) => {
     e.preventDefault();
     if (!file) return toast.warning("there is no file!");
-
     const formData = new FormData();
     formData.append("image", file);
-    dispatch(updatePostImage(formData,post?._id));
+    // @ts-ignore
+    dispatch(updatePostImage(formData, post?._id));
   };
 
   const navigate = useNavigate();
 
-  // Delete Post Handler
   const deletePostHandler = () => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this post!",
       icon: "warning",
+      // @ts-ignore
       buttons: true,
       dangerMode: true,
     }).then((isOk) => {
       if (isOk) {
-        dispatch(deletePost(post?._id));
+        // @ts-ignore
+        dispatch(deletePost(post._id));
         navigate(`/profile/${user?._id}`);
       }
     });
@@ -113,6 +108,7 @@ const PostDetails = () => {
         <div>
           {user && (
             <i
+              // @ts-ignore
               onClick={() => dispatch(toggleLikePost(post?._id))}
               className={
                 post?.likes.includes(user?._id)
@@ -133,13 +129,14 @@ const PostDetails = () => {
           </div>
         )}
       </div>
-      {
-        user ? <AddComment postId={post?._id} /> : 
+      {user ? (
+        <AddComment postId={post?._id} />
+      ) : (
         <p className="post-details-info-write">
           to write a comment you should login first
         </p>
-      }
-      
+      )}
+
       <CommentList comments={post?.comments} />
       {updatePost && (
         <UpdatePostModal post={post} setUpdatePost={setUpdatePost} />

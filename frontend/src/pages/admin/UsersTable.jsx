@@ -4,29 +4,27 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  deleteProfile,
-  getAllUsersProfile,
-} from "../../redux/apiCalls/profileApiCall";
+import { deleteProfile, getAllUsersProfile } from "../../redux/apiCalls/profileApiCall";
 
 const UsersTable = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { profiles, isProfileDeleted } = useSelector((state) => state.profile);
-
   useEffect(() => {
+    // @ts-ignore
     dispatch(getAllUsersProfile());
   }, [isProfileDeleted]);
-
-  // Delete User Handler
   const deleteUserHandler = (userId) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this user!",
       icon: "warning",
+      // @ts-ignore
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        // @ts-ignore
         dispatch(deleteProfile(userId));
       }
     });

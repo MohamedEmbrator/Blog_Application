@@ -7,11 +7,13 @@ import { fetchPostsBasedOnCategory } from "../../redux/apiCalls/postApiCall";
 
 const Category = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const { postsCate } = useSelector((state) => state.post);
 
   const { category } = useParams();
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchPostsBasedOnCategory(category));
     window.scrollTo(0, 0);
   }, [category]);
