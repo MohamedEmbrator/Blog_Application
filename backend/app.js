@@ -3,9 +3,13 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const connectToDB = require("./config/connectToDB");
+const xss = require("xss-clean");
 const { errorHandler, notFound } = require("./middlewares/error");
 connectToDB();
 app.use(express.json());
+
+// Prevent XSS ( Cross Site Scripting ) Attacks
+app.use(xss());
 
 const port = 3000;
 app.get("/", (req, res) => {
