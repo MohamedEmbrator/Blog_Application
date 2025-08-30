@@ -5,19 +5,28 @@ require("dotenv").config();
 const connectToDB = require("./config/connectToDB");
 const xss = require("xss-clean");
 const rateLimiting = require("express-rate-limit");
+const helmet = require("helmet");
+const hpp = require("hpp");
 const { errorHandler, notFound } = require("./middlewares/error");
 connectToDB();
 app.use(express.json());
+
+// Security Headers (helmet)
+app.use(helmet())
+
+// Prevent HTTP Param Pollution
+app.use(hpp());
 
 // Prevent XSS ( Cross Site Scripting ) Attacks
 app.use(xss());
 
 // Rate Limiting
-app.use(rateLimiting({
-  windowMs: 10 * 60 * 1000, // 10 Minutes
-  max: 200,
-
-}))
+app.use(
+  rateLimiting({
+    windowMs: 10 * 60 * 1000, // 10 Minutes
+    max: 200,
+  })
+);
 
 const port = 3000;
 app.get("/", (req, res) => {
